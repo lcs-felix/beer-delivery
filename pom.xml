@@ -9,7 +9,6 @@
 	<packaging>jar</packaging>
 
 	<name>beer-delivery</name>
-	<description>Demo project for Spring Boot</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -54,6 +53,11 @@
 			<scope>test</scope>
 		</dependency>
 
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-spatial</artifactId>
+        </dependency>
+
         <!-- java 9 -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
@@ -81,6 +85,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
 
 </project>
