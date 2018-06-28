@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -70,5 +69,17 @@ public class PDV {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "PDV{" +
+                "id=" + id +
+                ", tradingName='" + tradingName + '\'' +
+                ", ownerName='" + ownerName + '\'' +
+                ", document='" + document + '\'' +
+                ", coverageArea=" + coverageArea +
+                ", address=" + address +
+                '}';
     }
 }
