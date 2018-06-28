@@ -17,6 +17,10 @@ public class Mutation implements GraphQLMutationResolver {
 
     public PDV newPDV(PDVInput pdvInput) {
 
-        return pdvInput.toPDV();
+        var newPDV = pdvInput.toPDV();
+
+        pdvRepository.save(newPDV);
+
+        return newPDV;
     }
 }

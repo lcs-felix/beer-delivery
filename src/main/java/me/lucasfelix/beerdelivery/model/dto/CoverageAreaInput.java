@@ -5,7 +5,7 @@ import java.util.List;
 public class CoverageAreaInput {
 
     private String type;
-    private List<List<List<List<Float>>>> cordinates;
+    private List<List<List<List<Float>>>> coordinates;
 
     public String getType() {
         return type;
@@ -15,11 +15,11 @@ public class CoverageAreaInput {
         this.type = type;
     }
 
-    public List<List<List<List<Float>>>> getCordinates() {
-        return cordinates;
+    public List<List<List<List<Float>>>> getCoordinates() {
+        return coordinates;
     }
 
-    public void setCordinates(List<List<List<List<Float>>>> cordinates) {
-        this.cordinates = cordinates;
+    public void setCoordinates(List<List<List<List<Float>>>> coordinates) {
+        this.coordinates = coordinates;
     }
 }

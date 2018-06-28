@@ -1,8 +1,13 @@
 package me.lucasfelix.beerdelivery.model.dto;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import com.bedatadriven.jackson.datatype.jts.JtsModule;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vividsolutions.jts.geom.*;
 import me.lucasfelix.beerdelivery.model.PDV;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 public class PDVInput {
 
@@ -58,8 +63,16 @@ public class PDVInput {
         var addressCoordinate = new Coordinate(address.getLng(), address.getLat());
         var address = geometryFactory.createPoint(addressCoordinate);
 
-        System.out.println(coverageArea);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JtsModule());
 
-        return new PDV("Teste", ownerName, document, null, address);
+        try {
+            var json = mapper.writeValueAsString(coverageArea);
+            System.out.println(json);
+            var multiPolygon = mapper.readValue(json, MultiPolygon.class);
+            return new PDV(tradingName, ownerName, document, multiPolygon, address);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }

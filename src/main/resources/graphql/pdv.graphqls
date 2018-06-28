@@ -20,7 +20,7 @@ input PointInput {
 
 input CoverageAreaInput {
     type: String!
-    cordinates: [[[[Float!]]]]
+    coordinates: [[[[Float!]]]]
 }
 
 input PDVInput {
