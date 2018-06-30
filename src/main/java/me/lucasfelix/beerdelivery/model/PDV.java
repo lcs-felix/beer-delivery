@@ -31,7 +31,7 @@ public class PDV {
         this.address = address;
     }
 
-    PDV() {
+    public PDV() {
     }
 
     public Long getId() {
@@ -58,17 +58,22 @@ public class PDV {
         return address;
     }
 
+    public void setDocument(String document) {
+        this.document = document;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PDV pdv = (PDV) o;
-        return Objects.equals(id, pdv.id);
+        return Objects.equals(document, pdv.document);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+
+        return Objects.hash(document);
     }
 
     @Override

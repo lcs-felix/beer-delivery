@@ -11,6 +11,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+    open-in-view: true
 
 ---
 spring:
@@ -21,7 +22,12 @@ spring:
 
 ---
 spring:
+  flyway:
+    enabled: false
   profiles: test
   datasource:
     url: jdbc:postgresql://localhost:5432/beer_test
     username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update

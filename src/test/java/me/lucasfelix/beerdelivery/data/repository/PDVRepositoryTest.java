@@ -1,17 +1,17 @@
 package me.lucasfelix.beerdelivery.data.repository;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import me.lucasfelix.beerdelivery.model.PDV;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,38 +21,60 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
 @ActiveProfiles("test")
+@Sql(scripts = "classpath:data.sql")
 public class PDVRepositoryTest {
 
     @Autowired
     private PDVRepository pdvRepository;
 
-    @Autowired
-    private TestEntityManager manager;
+    private PDV pdvAdegaOsasco;
+    private PDV pdvBarLegal;
+
+    @Before
+    public void setUp() {
+        pdvAdegaOsasco = new PDV();
+        pdvAdegaOsasco.setDocument("02.453.716/000170");
+
+        pdvBarLegal = new PDV();
+        pdvBarLegal.setDocument("20.053.623/0001-30");
+    }
 
     @Test
-    public void givenAValidId_whenFinById_thenShouldReturnPDV() {
+    public void givenAPointThatIsCoveredByOneArea_whenfindAvaliablePDVs_returnTheNearestPDV() {
+        var aPoint =  createPoint("POINT(-43.3025 -23.0138)");
+        var pdvs = pdvRepository.findAvaliablePDVs(aPoint);
 
-        MultiPolygon coverageArea = null;
-        Point point = null;
+        assertThat(pdvs)
+                .hasSize(1)
+                .contains(pdvAdegaOsasco);
+    }
 
+    @Test
+    public void givenAPointThatNotIsCoveredByOneArea_whenfindAvaliablePDVs_returnZeroPoints() {
+        var aPoint =  createPoint("POINT(-43.194 -23.958)");
+
+        var pdvs = pdvRepository.findAvaliablePDVs(aPoint);
+
+        assertThat(pdvs)
+                .hasSize(0);
+    }
+
+    @Test
+    public void givenAPointThatIsCoveredByManyAreas_whenfindAvaliablePDVs_returnPDVs() {
+        var aPoint =  createPoint("POINT(-43.32898 -22.97055)");
+
+        var pdvs = pdvRepository.findAvaliablePDVs(aPoint);
+
+        assertThat(pdvs)
+                .hasSize(2)
+                .containsExactly(pdvBarLegal, pdvAdegaOsasco);
+    }
+
+    private Point createPoint(String wktPoint) {
         try {
-            coverageArea = (MultiPolygon) new WKTReader().read(
-                    "MULTIPOLYGON(((-39.147419929504395 -7.24837674958899, " +
-                            "-39.14748430252075 -7.250484077831977, -39.14527416229248 -7.250601151334155, -39.144737720489495 " +
-                            "-7.248727971647482, -39.147419929504395 -7.24837674958899)))");
-
-            point = (Point) new WKTReader().read("POINT(-39.14636850357056 -7.249590060993639)");
+            return (Point) new WKTReader().read(wktPoint);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        var newPDV = new PDV("Bar Lagoa", "Gabriel Jesus", "91081267/0006", coverageArea, point);
-
-        manager.persist(newPDV);
-
-        var optionalPdv = pdvRepository.findById(newPDV.getId());
-
-        assertThat(optionalPdv).isPresent();
-
-        assertThat(optionalPdv).contains(newPDV);
     }
 }
