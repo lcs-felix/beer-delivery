@@ -1,25 +1,24 @@
 package me.lucasfelix.beerdelivery.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import me.lucasfelix.beerdelivery.data.repository.PDVRepository;
 import me.lucasfelix.beerdelivery.model.PDV;
 import me.lucasfelix.beerdelivery.model.dto.PDVInput;
+import me.lucasfelix.beerdelivery.service.PDVService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Mutation implements GraphQLMutationResolver {
 
-    private PDVRepository pdvRepository;
+    private final PDVService pdvService;
 
-    public Mutation(PDVRepository pdvRepository) {
-        this.pdvRepository = pdvRepository;
+    public Mutation(PDVService pdvService) {
+        this.pdvService = pdvService;
     }
 
     public PDV newPDV(PDVInput pdvInput) {
-
         var newPDV = pdvInput.toPDV();
 
-        pdvRepository.save(newPDV);
+        pdvService.save(newPDV);
 
         return newPDV;
     }
