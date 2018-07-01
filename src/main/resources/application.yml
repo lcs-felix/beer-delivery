@@ -12,19 +12,15 @@ spring:
           lob:
             non_contextual_creation: true
     open-in-view: true
-
----
-spring:
-  profiles: dev
   datasource:
-    url: jdbc:postgresql://localhost:5432/beer_dev
+    url: jdbc:postgresql://localhost:5432/beer
     username: postgres
 
 ---
 spring:
+  profiles: test
   flyway:
     enabled: false
-  profiles: test
   datasource:
     url: jdbc:postgresql://localhost:5432/beer_test
     username: postgres
