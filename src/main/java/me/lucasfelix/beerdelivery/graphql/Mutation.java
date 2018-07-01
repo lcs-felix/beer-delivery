@@ -2,7 +2,7 @@ package me.lucasfelix.beerdelivery.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import me.lucasfelix.beerdelivery.model.PDV;
-import me.lucasfelix.beerdelivery.model.dto.PDVInput;
+import me.lucasfelix.beerdelivery.graphql.input.PDVInput;
 import me.lucasfelix.beerdelivery.service.PDVService;
 import org.springframework.stereotype.Component;
 

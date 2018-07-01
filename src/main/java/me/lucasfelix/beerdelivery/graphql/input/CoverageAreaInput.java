@@ -1,4 +1,4 @@
-package me.lucasfelix.beerdelivery.model.dto;
+package me.lucasfelix.beerdelivery.graphql.input;
 
 import java.util.List;
 

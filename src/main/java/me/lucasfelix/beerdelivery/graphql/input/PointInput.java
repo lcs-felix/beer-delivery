@@ -1,4 +1,4 @@
-package me.lucasfelix.beerdelivery.model.dto;
+package me.lucasfelix.beerdelivery.graphql.input;
 
 public class PointInput {
 

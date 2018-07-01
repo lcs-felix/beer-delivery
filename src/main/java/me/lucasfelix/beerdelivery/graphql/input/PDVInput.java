@@ -1,7 +1,6 @@
-package me.lucasfelix.beerdelivery.model.dto;
+package me.lucasfelix.beerdelivery.graphql.input;
 
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vividsolutions.jts.geom.*;
 import me.lucasfelix.beerdelivery.model.PDV;
@@ -68,7 +67,6 @@ public class PDVInput {
 
         try {
             var json = mapper.writeValueAsString(coverageArea);
-            System.out.println(json);
             var multiPolygon = mapper.readValue(json, MultiPolygon.class);
             return new PDV(tradingName, ownerName, document, multiPolygon, address);
         } catch (IOException e) {
