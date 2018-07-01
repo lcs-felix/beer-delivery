@@ -1,0 +1,7 @@
+CREATE DATABASE beer;
+\c beer;
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+
+CREATE DATABASE beer_test;
+\c beer_test;
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
