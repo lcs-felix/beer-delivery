@@ -1,9 +1,11 @@
-FROM 11-jre-slim
+FROM openjdk:10.0-jre-slim
 
 MAINTAINER Lucas Felix <lfelixsampaio@gmail.com>
 
 EXPOSE 8080
 
-ADD target/beer-delivery-1.0.jar /usr/share/beer-delivery/beer-delivery-1.0.jar
+ARG JAR_FILE
 
-ENTRYPOINT ["/usr/bin/java", "-jar", "/usr/share/beer-delivery/beer-delivery-1.0.jar"]
+ADD target/${JAR_FILE} /usr/share/beer-delivery/${JAR_FILE}
+
+ENTRYPOINT ["/usr/bin/java", "-jar", "/usr/share/beer-delivery/${JAR_FILE}"]
