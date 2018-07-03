@@ -29,3 +29,14 @@ $ mvn spring-boot:run
 
 Agora é só acessar [http://localhost:8080/graphiql](http://localhost:8080/graphiql) ;)
 
+# Deploy
+
+O arquivo `docker-compose.yml` é responsável pelos containers 
+do Postgres com Postgis e de uma imagem com a aplicação.
+
+Seria possível configurar a aplicação em um servidor 
+de integração contínua para que buildar a aplicação e deployar
+em algum serviço. 
+
+O comando `mvn deploy` builda a aplicação e a imagem do Docker 
+que a contém e envia pro [Dockerhub](https://hub.docker.com/r/lucasfelix/beer-delivery/tags/). 
