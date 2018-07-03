@@ -1,0 +1,9 @@
+{
+    findNearestPDVs(lng: -43.32898, lat: -22.97055) {
+        tradingName
+        ownerName
+        document
+        coverageArea
+        address
+    }
+}

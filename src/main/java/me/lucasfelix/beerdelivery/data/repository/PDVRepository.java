@@ -15,5 +15,5 @@ public interface PDVRepository extends Repository<PDV, Long> {
 
     @Query("select p from PDV p where contains(p.coverageArea, :point) = true " +
             "order by distance(p.address, :point) asc")
-    Iterable<PDV> findAvaliablePDVs(@Param("point") Point point);
+    Iterable<PDV> findNearestPDVs(@Param("point") Point point);
 }

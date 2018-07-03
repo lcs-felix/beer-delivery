@@ -1,0 +1,61 @@
+{
+  "input": {
+    "tradingName": "Cangaço Rock Bar",
+    "ownerName": "João Santos",
+    "document": "1434562120945/0003",
+    "address": {
+      "type": "Point",
+      "lng": -43.32898,
+      "lat": -22.97055
+    },
+    "coverageArea": {
+      "type": "MultiPolygon",
+      "coordinates": [
+        [
+          [
+            [
+              30,
+              20
+            ],
+            [
+              45,
+              40
+            ],
+            [
+              10,
+              40
+            ],
+            [
+              30,
+              20
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              15,
+              5
+            ],
+            [
+              40,
+              10
+            ],
+            [
+              10,
+              20
+            ],
+            [
+              5,
+              10
+            ],
+            [
+              15,
+              5
+            ]
+          ]
+        ]
+      ]
+    }
+  }
+}

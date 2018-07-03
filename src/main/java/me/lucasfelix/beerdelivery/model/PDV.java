@@ -3,10 +3,7 @@ package me.lucasfelix.beerdelivery.model;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -19,6 +16,8 @@ public class PDV {
     private Long id;
     private String tradingName;
     private String ownerName;
+
+    @Column(unique = true)
     private String document;
     private MultiPolygon coverageArea;
     private Point address;

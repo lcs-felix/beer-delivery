@@ -25,6 +25,6 @@ public class PDVService {
     }
 
     public Iterable<PDV> findAvaliablePDVs(Point point) {
-        return repository.findAvaliablePDVs(point);
+        return repository.findNearestPDVs(point);
     }
 }

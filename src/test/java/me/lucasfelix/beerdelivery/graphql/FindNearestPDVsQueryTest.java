@@ -7,7 +7,6 @@ import me.lucasfelix.beerdelivery.util.RestTemplateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -25,10 +24,13 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Sql("classpath:data.sql")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public class FindByIdQueryTest {
+public class FindNearestPDVsQueryTest {
 
     @Autowired
-    private String findPDVByIdPayload;
+    private TestRestTemplate restTemplate;
+
+    @Autowired
+    private String findNearestPDVsPayload;
 
     @Autowired
     private GraphQLTestUtils graphQLTestUtils;
@@ -37,9 +39,9 @@ public class FindByIdQueryTest {
     private RestTemplateUtils restTemplateUtils;
 
     @Test
-    public void givenAQuery_whenFindPDVById_thenReturnResponse() {
+    public void givenAPoint_whenQueryTheNearestAvaliablePDVS_thenReturnPoints() {
 
-        var jsonPayload = graphQLTestUtils.createJsonQuery(findPDVByIdPayload);
+        var jsonPayload = graphQLTestUtils.createJsonQuery(findNearestPDVsPayload);
 
         var response = restTemplateUtils.doRequest(jsonPayload);
 
@@ -54,12 +56,16 @@ public class FindByIdQueryTest {
         assertThat(parsedResponse.get("data"))
                 .isNotNull();
 
-        assertThat(parsedResponse.get("data").get("findPDVById"))
+        assertThat(parsedResponse.get("data").get("findNearestPDVs"))
                 .isNotNull();
 
-        assertThat(parsedResponse.get("data").get("findPDVById").get("document"))
+        assertThat(parsedResponse.get("data").get("findNearestPDVs").get(0).get("document"))
                 .isNotNull()
-                .isEqualTo(new TextNode("02.453.716/000170"));
+                .isEqualTo(new TextNode("20.053.623/0001-30"));
+
+        assertThat(parsedResponse.get("data").get("findNearestPDVs").get(1).get("document"))
+            .isNotNull()
+            .isEqualTo(new TextNode("02.453.716/000170"));
 
         assertThat(parsedResponse.get("errors")).isNull();
     }

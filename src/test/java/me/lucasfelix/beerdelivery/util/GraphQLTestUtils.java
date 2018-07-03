@@ -5,10 +5,17 @@ import com.fasterxml.jackson.core.util.BufferRecyclers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Component
 public class GraphQLTestUtils {
@@ -22,6 +29,17 @@ public class GraphQLTestUtils {
 
     public String createJsonQuery(String graphQL) {
         return queryWrapper.replace("__payload__", escapeQuery(graphQL));
+    }
+
+    public String createJsonMutation(String graphQL, String jsonVariables) {
+
+        final String queryWithoutVariables = createJsonQuery(graphQL);
+
+        if(jsonVariables == null) {
+            return queryWithoutVariables;
+        }
+
+        return queryWithoutVariables.replace("null", jsonVariables);
     }
 
     private String escapeQuery(String graphQL) {

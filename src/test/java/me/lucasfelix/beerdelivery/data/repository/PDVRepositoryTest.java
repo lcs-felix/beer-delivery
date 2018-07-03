@@ -42,7 +42,7 @@ public class PDVRepositoryTest {
     @Test
     public void givenAPointThatIsCoveredByOneArea_whenfindAvaliablePDVs_returnTheNearestPDV() {
         var aPoint =  createPoint("POINT(-43.3025 -23.0138)");
-        var pdvs = pdvRepository.findAvaliablePDVs(aPoint);
+        var pdvs = pdvRepository.findNearestPDVs(aPoint);
 
         assertThat(pdvs)
                 .hasSize(1)
@@ -53,7 +53,7 @@ public class PDVRepositoryTest {
     public void givenAPointThatNotIsCoveredByOneArea_whenfindAvaliablePDVs_returnZeroPoints() {
         var aPoint =  createPoint("POINT(-43.194 -23.958)");
 
-        var pdvs = pdvRepository.findAvaliablePDVs(aPoint);
+        var pdvs = pdvRepository.findNearestPDVs(aPoint);
 
         assertThat(pdvs)
                 .hasSize(0);
@@ -63,7 +63,7 @@ public class PDVRepositoryTest {
     public void givenAPointThatIsCoveredByManyAreas_whenfindAvaliablePDVs_returnPDVs() {
         var aPoint =  createPoint("POINT(-43.32898 -22.97055)");
 
-        var pdvs = pdvRepository.findAvaliablePDVs(aPoint);
+        var pdvs = pdvRepository.findNearestPDVs(aPoint);
 
         assertThat(pdvs)
                 .hasSize(2)

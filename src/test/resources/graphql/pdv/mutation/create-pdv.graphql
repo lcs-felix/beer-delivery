@@ -1,0 +1,10 @@
+mutation($input: PDVInput!) {
+    newPDV(pdv: $input) {
+        id
+        tradingName
+        document
+        ownerName
+        address
+        coverageArea
+    }
+}

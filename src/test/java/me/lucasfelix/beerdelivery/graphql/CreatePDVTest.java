@@ -7,7 +7,6 @@ import me.lucasfelix.beerdelivery.util.RestTemplateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -16,19 +15,24 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@Sql("classpath:data.sql")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public class FindByIdQueryTest {
+@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class CreatePDVTest {
 
     @Autowired
-    private String findPDVByIdPayload;
+    private String createPDVMutationPayload;
+
+    @Autowired
+    private String createPDVVariables;
 
     @Autowired
     private GraphQLTestUtils graphQLTestUtils;
@@ -37,16 +41,16 @@ public class FindByIdQueryTest {
     private RestTemplateUtils restTemplateUtils;
 
     @Test
-    public void givenAQuery_whenFindPDVById_thenReturnResponse() {
+    public void givenAPDVPayload_whenCallMutation_thenCreateNewPDV() {
 
-        var jsonPayload = graphQLTestUtils.createJsonQuery(findPDVByIdPayload);
+        var jsonMutation = graphQLTestUtils.createJsonMutation(createPDVMutationPayload, createPDVVariables);
 
-        var response = restTemplateUtils.doRequest(jsonPayload);
+        var response = restTemplateUtils.doRequest(jsonMutation);
 
         assertThat(response.getStatusCode())
                 .isEqualTo(HttpStatus.OK);
 
-        JsonNode parsedResponse = graphQLTestUtils.parse(response.getBody());
+        var parsedResponse = graphQLTestUtils.parse(response.getBody());
 
         assertThat(parsedResponse)
                 .isNotNull();
@@ -54,13 +58,14 @@ public class FindByIdQueryTest {
         assertThat(parsedResponse.get("data"))
                 .isNotNull();
 
-        assertThat(parsedResponse.get("data").get("findPDVById"))
+        assertThat(parsedResponse.get("data").get("newPDV"))
                 .isNotNull();
 
-        assertThat(parsedResponse.get("data").get("findPDVById").get("document"))
+        assertThat(parsedResponse.get("data").get("newPDV").get("document"))
                 .isNotNull()
-                .isEqualTo(new TextNode("02.453.716/000170"));
+                .isEqualTo(new TextNode("1434562120945/0003"));
 
-        assertThat(parsedResponse.get("errors")).isNull();
+        assertThat(parsedResponse.get("errors"))
+                .isNull();
     }
 }
