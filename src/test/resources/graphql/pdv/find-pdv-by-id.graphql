@@ -1,0 +1,9 @@
+{
+    findPDVById(id: 1) {
+        tradingName
+        ownerName
+        document
+        coverageArea
+        address
+    }
+}
